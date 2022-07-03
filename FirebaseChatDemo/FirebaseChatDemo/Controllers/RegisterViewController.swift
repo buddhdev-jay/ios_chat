@@ -45,10 +45,18 @@ extension RegisterViewController {
                     print("error in creating error")
                     return
                 }
-                DatabaseManager.shared.insertUser(with: ChatAppUser(emailAddress: email))
-                let user = result.user
-                self?.alert(customMessage: "User Created: \(user.email)")
-                self?.navigationController?.popViewController(animated: true)
+                DatabaseManager.shared.insertUser(with: ChatAppUser(emailAddress: email),completion: { success in
+                    if success {
+                        let user = result.user
+                        self?.alert(customMessage: "User Created: \(user.email)")
+                        self?.navigationController?.popViewController(animated: true)
+                    } else {
+                        self?.alert(customMessage: "Error in Creating User")
+                    }
+                })
+//                let user = result.user
+//                self?.alert(customMessage: "User Created: \(user.email)")
+//                self?.navigationController?.popViewController(animated: true)
             })
         })
         
