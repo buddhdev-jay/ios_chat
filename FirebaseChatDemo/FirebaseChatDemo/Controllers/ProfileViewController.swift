@@ -17,7 +17,23 @@ class ProfileViewController: UIViewController {
     
     @IBAction func newConvwerstionButtonTapped(_ sender: Any) {
         if let newChatVC = self.storyboard?.instantiateViewController(withIdentifier: "newConverstionViewController") as? NewConverstionViewController {
+            newChatVC.completion = { [weak self] result in
+                print("\(result)")
+                self?.createNewConverstion(result: result)
+            }
             self.navigationController?.pushViewController(newChatVC, animated: true)
+        }
+    }
+    private func createNewConverstion(result: [String:String]) {
+        if let chatVC = self.storyboard?.instantiateViewController(withIdentifier: "chatViewController") as? ChatViewController {
+            guard let email = result["email"] else {
+                return
+            }
+            chatVC.title = email
+            chatVC.isNewConverstion = true
+            chatVC.userEmail = email
+            chatVC.conversationId = nil
+            self.navigationController?.pushViewController(chatVC, animated: true)
         }
     }
     

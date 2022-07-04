@@ -12,6 +12,8 @@ class NewConverstionViewController: UIViewController {
     @IBOutlet weak var tableview: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     
+    public var completion : (([String:String]) -> (Void))?
+    
     private var users = [[String:String]]()
     private var results = [[String:String]]()
     private var hasFetched = false
@@ -43,7 +45,16 @@ extension NewConverstionViewController :UITableViewDataSource {
         return cell
     }
     
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let selectedUser = results[indexPath.row]
+        
+        dismiss(animated: true, completion: { [weak self] in
+            self?.completion?(selectedUser)
+        })
+        
+        //dismissVc()
+    }
 }
 
 extension NewConverstionViewController {
